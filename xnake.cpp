@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib> // rand, srand
 #include <vector>
 #include <thread> // sleep_for
 #include <chrono> // seconds
@@ -38,6 +39,8 @@ int main()
 	direction dir = left;
 
 	int const width = 59, height = 29;
+
+	srand((int)time(0));
 
 	while (1)
 	{
@@ -80,13 +83,26 @@ int main()
 			head.y += 1;
 		}
 
-		if (food == point(0, 0))
+		snake.insert(snake.begin(), head);
+
+		if (head == food)
 		{
-			food = point(1 + rand() % (width - 2), 1 + rand() % (height - 2));
+			food = point(0, 0);
+		}
+		else
+		{
+			snake.pop_back();	
 		}
 
-		snake.pop_back();
-		snake.insert(snake.begin(), head);
+		if (food == point(0, 0))
+		{
+			point const food_drop = point(1 + rand() % (width - 2), 1 + rand() % (height - 2));
+
+			if (std::find(snake.begin(), snake.end(), food_drop) == snake.end())
+			{
+				food = food_drop;
+			}
+		}
 		
 		// Не кросс-платформенное решение, но лучше пока не наёдено.
 		std::system("cls");
@@ -99,7 +115,7 @@ int main()
 				{
 					if (x > 0 && x < width - 1)
 					{
-						std::cout << '=';
+						std::cout << '-';
 					}
 					else
 					{
