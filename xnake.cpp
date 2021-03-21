@@ -34,10 +34,12 @@ struct point
 int main()
 {
 	std::vector<point> snake{ point(39, 10), point(40, 10), point(41, 10) };
-	point head = snake.front();
-	point food = point(0, 0);
+	point head = snake.front(), food = point(0, 0);
 	direction dir = left;
 
+	//std::size_t const initial_score = snake.size();
+
+	// Размеры удобные для ОС Windows.
 	int const width = 59, height = 29;
 
 	srand((int)time(0));
@@ -83,6 +85,18 @@ int main()
 			head.y += 1;
 		}
 
+		// Не кросс-платформенное решение, но лучше пока не наёдено.
+		std::system("cls");
+
+		if (head.x <= 0 || head.x >= width - 1 ||
+			head.y <= 0 || head.y >= height - 1 ||
+			std::find(snake.begin(), snake.end(), head) != snake.end())
+		{
+			std::cout << "game over" << std::endl
+				<< "you earned " << snake.size() << " points" << std::endl;
+			return 0;
+		}
+
 		snake.insert(snake.begin(), head);
 
 		if (head == food)
@@ -104,9 +118,6 @@ int main()
 			}
 		}
 		
-		// Не кросс-платформенное решение, но лучше пока не наёдено.
-		std::system("cls");
-
 		for (int y = 0; y < height; ++y)
 		{
 			for (int x = 0; x < width; ++x)
@@ -167,6 +178,11 @@ int main()
 				{
 					std::cout << ' ';
 				}
+			}
+
+			if (y == 4)
+			{
+				std::cout << "\tscore: " << snake.size();
 			}
 
 			std::cout << std::endl;
