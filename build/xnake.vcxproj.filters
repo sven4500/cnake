@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="xnake.cpp">
+    <ClCompile Include="..\src\xnake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
