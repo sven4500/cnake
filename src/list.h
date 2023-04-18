@@ -4,39 +4,43 @@
 #include <stdbool.h>  // true, false
 
 // Linked list node.
-typedef struct node_
+typedef struct node
 {
 	int x;
 	int y;
-	struct node_* next;
+	struct node* next;
 
 } node;
 
 node* node_push_back(node* root, int x, int y)
 {
 	// Create new node and initialize point.
-	node* n = malloc(sizeof(node));
-	n->x = x;
-	n->y = y;
-	n->next = NULL;
+	node* const new_node = malloc(sizeof(node));
+	new_node->x = x;
+	new_node->y = y;
+	new_node->next = NULL;
 
 	// Find last node in linked list.
 	while (root->next)
 		root = root->next;
 
 	// Tell last node to reference new node.
-	root->next = n;
+	root->next = new_node;
 
 	// Return new node.
-	return n;
+	return new_node;
 }
 
-node* node_push_front(node* root, node* n)
+node* node_push_front(node* root, int x, int y)
 {
-	node* next = root->next;
-	root->next = n;
-	n->next = next;
-	return n;
+	// Create new node and initialize point.
+	node* const new_node = malloc(sizeof(node));
+	new_node->x = x;
+	new_node->y = y;
+	new_node->next = root;
+
+	// Return new node.
+	return new_node;
 }
 
 void node_pop_back(node* root)
@@ -66,7 +70,7 @@ node* node_contains(node* root, int x, int y)
 	return NULL;
 }
 
-int node_size(node* root)
+int node_count(node* root)
 {
 	int size = 1;
 	while ((root = root->next))
