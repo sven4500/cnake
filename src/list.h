@@ -12,13 +12,32 @@ typedef struct node
 
 } node;
 
-node* node_push_back(node* root, int x, int y)
+node* node_create(int x, int y)
 {
-	// Create new node and initialize point.
-	node* const new_node = malloc(sizeof(node));
+	node* const new_node = (node*)malloc(sizeof(node));
+
 	new_node->x = x;
 	new_node->y = y;
 	new_node->next = NULL;
+
+	return new_node;
+}
+
+void node_destroy(node* node)
+{
+	if (!node)
+		return;
+	free(node);
+}
+
+node* node_push_back(node* root, int x, int y)
+{
+	// Return NULL immediately if no root node exists.
+	if (!root)
+		return NULL;
+
+	// Create new node and initialize point.
+	node* const new_node = node_create(x, y);
 
 	// Find last node in linked list.
 	while (root->next)
@@ -33,10 +52,12 @@ node* node_push_back(node* root, int x, int y)
 
 node* node_push_front(node* root, int x, int y)
 {
+	// Return NULL immediately if no root node exists.
+	if (!root)
+		return NULL;
+
 	// Create new node and initialize point.
-	node* const new_node = malloc(sizeof(node));
-	new_node->x = x;
-	new_node->y = y;
+	node* const new_node = node_create(x, y);
 	new_node->next = root;
 
 	// Return new node.
@@ -55,7 +76,7 @@ void node_pop_back(node* root)
 	}
 
 	prev->next = NULL;
-	free(last);
+	node_destroy(last);
 }
 
 node* node_contains(node* root, int x, int y)
@@ -72,6 +93,8 @@ node* node_contains(node* root, int x, int y)
 
 int node_count(node* root)
 {
+	if (!root)
+		return 0;
 	int size = 1;
 	while ((root = root->next))
 		size++;
